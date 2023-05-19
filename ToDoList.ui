@@ -34,7 +34,7 @@
      <rect>
       <x>0</x>
       <y>30</y>
-      <width>351</width>
+      <width>350</width>
       <height>461</height>
      </rect>
     </property>
@@ -53,6 +53,12 @@
         <width>291</width>
         <height>29</height>
        </rect>
+      </property>
+      <property name="accessibleDescription">
+       <string/>
+      </property>
+      <property name="placeholderText">
+       <string>Enter the task</string>
       </property>
      </widget>
      <widget class="QPushButton" name="addtask_pushButton">
@@ -142,9 +148,9 @@
      <widget class="QTableWidget" name="tasks_tableWidget">
       <property name="geometry">
        <rect>
-        <x>10</x>
+        <x>2</x>
         <y>100</y>
-        <width>331</width>
+        <width>342</width>
         <height>331</height>
        </rect>
       </property>
@@ -173,22 +179,34 @@
        <property name="text">
         <string>Task</string>
        </property>
+       <property name="icon">
+        <iconset>
+         <normaloff>Icons/folder-sticky-note.png</normaloff>Icons/folder-sticky-note.png</iconset>
+       </property>
       </column>
       <column>
        <property name="text">
         <string>Time Left</string>
+       </property>
+       <property name="icon">
+        <iconset>
+         <normaloff>Icons/alarm-clock-blue.png</normaloff>Icons/alarm-clock-blue.png</iconset>
        </property>
       </column>
       <column>
        <property name="text">
         <string>Deadline</string>
        </property>
+       <property name="icon">
+        <iconset>
+         <normaloff>Icons/calendar--exclamation.png</normaloff>Icons/calendar--exclamation.png</iconset>
+       </property>
       </column>
      </widget>
      <widget class="QPushButton" name="deletetask_pushButton">
       <property name="geometry">
        <rect>
-        <x>310</x>
+        <x>313</x>
         <y>70</y>
         <width>31</width>
         <height>31</height>
@@ -205,7 +223,7 @@
      <widget class="QComboBox" name="timesort_comboBox">
       <property name="geometry">
        <rect>
-        <x>10</x>
+        <x>2</x>
         <y>78</y>
         <width>111</width>
         <height>22</height>
@@ -237,6 +255,23 @@
        </property>
       </item>
      </widget>
+     <widget class="QPushButton" name="finishtask_pushButton">
+      <property name="geometry">
+       <rect>
+        <x>280</x>
+        <y>70</y>
+        <width>31</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normaloff>Icons/spell-check.png</normaloff>Icons/spell-check.png</iconset>
+      </property>
+     </widget>
     </widget>
     <widget class="QWidget" name="completed_Tab">
      <attribute name="title">
@@ -245,30 +280,12 @@
      <widget class="QTableWidget" name="completed_tableWidget">
       <property name="geometry">
        <rect>
-        <x>0</x>
+        <x>2</x>
         <y>0</y>
-        <width>346</width>
-        <height>441</height>
+        <width>342</width>
+        <height>431</height>
        </rect>
       </property>
-      <property name="gridStyle">
-       <enum>Qt::SolidLine</enum>
-      </property>
-      <property name="sortingEnabled">
-       <bool>false</bool>
-      </property>
-      <attribute name="horizontalHeaderVisible">
-       <bool>false</bool>
-      </attribute>
-      <attribute name="horizontalHeaderCascadingSectionResizes">
-       <bool>false</bool>
-      </attribute>
-      <attribute name="horizontalHeaderDefaultSectionSize">
-       <number>109</number>
-      </attribute>
-      <attribute name="horizontalHeaderHighlightSections">
-       <bool>true</bool>
-      </attribute>
       <attribute name="verticalHeaderVisible">
        <bool>false</bool>
       </attribute>
@@ -284,7 +301,61 @@
       </column>
       <column>
        <property name="text">
-        <string>Deadline</string>
+        <string>Finish Time</string>
+       </property>
+      </column>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="calendar_tab">
+     <attribute name="title">
+      <string>Calendar</string>
+     </attribute>
+     <widget class="QCalendarWidget" name="calendarWidget">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>345</width>
+        <height>261</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QTableWidget" name="calendar_tableWidget">
+      <property name="geometry">
+       <rect>
+        <x>2</x>
+        <y>271</y>
+        <width>342</width>
+        <height>161</height>
+       </rect>
+      </property>
+      <attribute name="horizontalHeaderMinimumSectionSize">
+       <number>70</number>
+      </attribute>
+      <attribute name="horizontalHeaderDefaultSectionSize">
+       <number>150</number>
+      </attribute>
+      <attribute name="verticalHeaderVisible">
+       <bool>false</bool>
+      </attribute>
+      <column>
+       <property name="text">
+        <string>Task</string>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>End time</string>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
        </property>
       </column>
      </widget>
