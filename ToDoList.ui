@@ -42,6 +42,10 @@
      <number>0</number>
     </property>
     <widget class="QWidget" name="tasks_Tab">
+     <attribute name="icon">
+      <iconset>
+       <normaloff>Icons/clipboard--pencil.png</normaloff>Icons/clipboard--pencil.png</iconset>
+     </attribute>
      <attribute name="title">
       <string>Tasks</string>
      </attribute>
@@ -181,7 +185,7 @@
        </property>
        <property name="icon">
         <iconset>
-         <normaloff>Icons/folder-sticky-note.png</normaloff>Icons/folder-sticky-note.png</iconset>
+         <normaloff>Icons/clipboard-task.png</normaloff>Icons/clipboard-task.png</iconset>
        </property>
       </column>
       <column>
@@ -274,6 +278,10 @@
      </widget>
     </widget>
     <widget class="QWidget" name="completed_Tab">
+     <attribute name="icon">
+      <iconset>
+       <normaloff>Icons/clipboard-task.png</normaloff>Icons/clipboard-task.png</iconset>
+     </attribute>
      <attribute name="title">
       <string>Completed</string>
      </attribute>
@@ -307,6 +315,10 @@
      </widget>
     </widget>
     <widget class="QWidget" name="calendar_tab">
+     <attribute name="icon">
+      <iconset>
+       <normaloff>Icons/calendar-search-result.png</normaloff>Icons/calendar-search-result.png</iconset>
+     </attribute>
      <attribute name="title">
       <string>Calendar</string>
      </attribute>
@@ -324,9 +336,9 @@
       <property name="geometry">
        <rect>
         <x>2</x>
-        <y>271</y>
+        <y>301</y>
         <width>342</width>
-        <height>161</height>
+        <height>131</height>
        </rect>
       </property>
       <attribute name="horizontalHeaderMinimumSectionSize">
@@ -358,6 +370,41 @@
         </font>
        </property>
       </column>
+     </widget>
+     <widget class="QLabel" name="selectdate_label">
+      <property name="geometry">
+       <rect>
+        <x>2</x>
+        <y>262</y>
+        <width>251</width>
+        <height>38</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>16</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Pick a date</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="defaultcalendar_pushButton">
+      <property name="geometry">
+       <rect>
+        <x>310</x>
+        <y>265</y>
+        <width>31</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normaloff>Icons/calendar-previous.png</normaloff>Icons/calendar-previous.png</iconset>
+      </property>
      </widget>
     </widget>
    </widget>
