@@ -4,6 +4,7 @@ import PyQt6.QtWidgets as qtw
 import PyQt6.QtCore as Qt
 from PyQt6 import uic
 import sqlite3
+from random import randint
 import sys
 
 
@@ -17,12 +18,9 @@ cData = connData.cursor()
 cData.execute("""CREATE TABLE if not exists todolist(
     name_task TEXT,
     date_task TEXT,
-    time_task TEXT)
-    """)
-cData.execute("""CREATE TABLE if not exists todolist_completed(
-    name_task TEXT,
-    completed_task TEXT,
-    lefttime_task TEXT)
+    time_task TEXT,
+    id_task INT,
+    completed_task BOOLEAN)
     """)
 #commit changes
 connData.commit()
@@ -43,11 +41,12 @@ class UI(qtw.QMainWindow):
         #Define the buttons
         self.leave_pushButton = self.findChild(qtw.QPushButton, "leave_pushButton")
         self.refreshtask_pushButton = self.findChild(qtw.QPushButton, "refreshtask_pushButton")
-        self.save_pushButton = self.findChild(qtw.QPushButton, "save_pushButton")
         self.addtask_pushButton = self.findChild(qtw.QPushButton, "addtask_pushButton")
         self.deletetask_pushButton = self.findChild(qtw.QPushButton, "deletetask_pushButton")
         self.finishtask_pushButton = self.findChild(qtw.QPushButton, "finishtask_pushButton")
         self.defaultcalendar_pushButton = self.findChild(qtw.QPushButton, "defaultcalendar_pushButton")
+        self.uncompletedtask_pushButton = self.findChild(qtw.QPushButton, "uncompletedtask_pushButton")
+        self.deletetask_pushButton_2 = self.findChild(qtw.QPushButton, "deletetask_pushButton_2")
 
         # Define checkboxes
         self.deadlineDate_CheckBox = self.findChild(qtw.QCheckBox, "deadlineDate_CheckBox")
@@ -81,11 +80,12 @@ class UI(qtw.QMainWindow):
         # Click Button
         self.leave_pushButton.clicked.connect(self.leave_pushButton_down)
         self.refreshtask_pushButton.clicked.connect(self.refreshtask_pushButton_down)
-        self.save_pushButton.clicked.connect(self.save_pushButton_down)
         self.addtask_pushButton.clicked.connect(self.addtask_pushButton_down)
         self.deletetask_pushButton.clicked.connect(self.deletetask_pushButton_down)
         self.finishtask_pushButton.clicked.connect(self.finishtask_pushButton_down)
         self.defaultcalendar_pushButton.clicked.connect(self.defaultcalendar_pushButton_down)
+        self.uncompletedtask_pushButton.clicked.connect(self.uncompletedtask_pushButton_down)
+        self.deletetask_pushButton_2.clicked.connect(self.deletetask_pushButton_2_down)
 
         #Calendar button
         self.calendarWidget.selectionChanged.connect(self.selectdate_calendarWidget)
@@ -100,21 +100,38 @@ class UI(qtw.QMainWindow):
         self.tasks_tableWidget.setColumnWidth(1, 80)
         self.tasks_tableWidget.setColumnWidth(2, 90)
             #calendar table
-        self.calendar_tableWidget.setColumnWidth(0, 200)
-        self.calendar_tableWidget.setColumnWidth(1, 140)
+        self.calendar_tableWidget.setColumnWidth(0, 245)
+        self.calendar_tableWidget.setColumnWidth(1, 90)
             #completed table
         self.completed_tableWidget.setColumnWidth(0, 170)
         self.completed_tableWidget.setColumnWidth(1, 80)
         self.completed_tableWidget.setColumnWidth(2, 90)
+            # Hidden column
+        self.tasks_tableWidget.setColumnHidden(3, True)
+        self.completed_tableWidget.setColumnHidden(3, True)
         
         #Download data
         self.download_database()
+        
+        # Window attribute
+        self.setWindowFlags(Qt.Qt.WindowType.FramelessWindowHint)
+        #self.setAttribute(Qt.Qt.WidgetAttribute.WA_TranslucentBackground)
+        
         
         #show the app
         self.show()
     
     # Additional functions
-    def timeleft(self, currentDate, currentTime, selectTime, selectDate):
+        # Move window
+    def mousePressEvent(self, event):
+        self.dragPos = event.globalPosition().toPoint()
+    
+    def mouseMoveEvent(self, event):
+        self.move(self.pos()+event.globalPosition().toPoint() - self.dragPos)
+        self.dragPos = event.globalPosition().toPoint()
+        event.accept()
+    
+    def timeleft_func(self, currentDate, currentTime, selectTime, selectDate):
         current_date_time = Qt.QDateTime(currentDate, currentTime)
         selected_date_time = Qt.QDateTime(selectDate,selectTime)
         timeLeft = current_date_time.daysTo(selected_date_time)
@@ -144,45 +161,41 @@ class UI(qtw.QMainWindow):
         # Cursor
         cData = connData.cursor()
         
-        cData.execute("SELECT * FROM todolist ORDER BY date_task ASC, time_task ASC")
+        cData.execute("SELECT * FROM todolist ORDER BY date_task ASC, time_task ASC, id_task, completed_task")
         dataRecords = cData.fetchall()
-        cData.execute("SELECT * FROM todolist_completed")
-        dataRecordsCompleted = cData.fetchall()
         #commit changes
         connData.commit()
 
         #close connection
         connData.close()
         for record in dataRecords:
-            row_count = self.tasks_tableWidget.rowCount()
-            if record[2] == '-' or record[1] == '-':
-                itemDate = qtw.QTableWidgetItem('-')
-                itemTime = qtw.QTableWidgetItem('-')
-            else:
-                itemDate = record[1].split('.')
-                itemTime = record[2].split(':')
-                itemDate = Qt.QDate(int(itemDate[2]),int(itemDate[1]),int(itemDate[0]))
-                itemTime = Qt.QTime(int(itemTime[0]),int(itemTime[1]))
+            if record[4] == 0:
+                row_count = self.tasks_tableWidget.rowCount()
+                if record[2] == '-' or record[1] == '-':
+                    itemDate = qtw.QTableWidgetItem('-')
+                    itemTime = qtw.QTableWidgetItem('-')
+                else:
+                    itemDate = record[1].split('.')
+                    itemTime = record[2].split(':')
+                    itemDate = Qt.QDate(int(itemDate[2]),int(itemDate[1]),int(itemDate[0]))
+                    itemTime = Qt.QTime(int(itemTime[0]),int(itemTime[1]))
+                    self.tasks_tableWidget.setRowCount(row_count + 1)
+                    itemTime =qtw.QTableWidgetItem(self.timeleft_func(currentDate, currentTime, itemTime, itemDate))
+                    itemDate = qtw.QTableWidgetItem(record[1])
                 self.tasks_tableWidget.setRowCount(row_count + 1)
-                itemTime =qtw.QTableWidgetItem(self.timeleft(currentDate, currentTime, itemTime, itemDate))
-                itemDate = qtw.QTableWidgetItem(record[1])
-            self.tasks_tableWidget.setRowCount(row_count + 1)
-            self.tasks_tableWidget.setItem(row_count,0,qtw.QTableWidgetItem(record[0]))
-            self.tasks_tableWidget.setItem(row_count,1,qtw.QTableWidgetItem(itemTime))
-            self.tasks_tableWidget.setItem(row_count,2,qtw.QTableWidgetItem(itemDate))
+                self.tasks_tableWidget.setItem(row_count,0,qtw.QTableWidgetItem(record[0]))
+                self.tasks_tableWidget.setItem(row_count,1,qtw.QTableWidgetItem(itemTime))
+                self.tasks_tableWidget.setItem(row_count,2,qtw.QTableWidgetItem(itemDate))
+                self.tasks_tableWidget.setItem(row_count,3,qtw.QTableWidgetItem(str(record[3])))
         
-        
-        for record in dataRecordsCompleted:
-            row_count = self.completed_tableWidget.rowCount()
-            self.completed_tableWidget.setRowCount(row_count + 1)
-            self.completed_tableWidget.setItem(row_count,0,qtw.QTableWidgetItem(record[0]))
-            self.completed_tableWidget.setItem(row_count,1,qtw.QTableWidgetItem(record[1]))
-            self.completed_tableWidget.setItem(row_count,2,qtw.QTableWidgetItem(record[2]))
-        
-        
-    #save last changed to database
-    def save_data(self, newTask):
-        pass
+            else:
+                row_count = self.completed_tableWidget.rowCount()
+                self.completed_tableWidget.setRowCount(row_count + 1)
+                self.completed_tableWidget.setItem(row_count,0,qtw.QTableWidgetItem(record[0]))
+                self.completed_tableWidget.setItem(row_count,1,qtw.QTableWidgetItem(record[1]))
+                self.completed_tableWidget.setItem(row_count,2,qtw.QTableWidgetItem(record[2]))
+                self.completed_tableWidget.setItem(row_count,3,qtw.QTableWidgetItem(str(record[3])))
+            
     
     
                 
@@ -193,22 +206,72 @@ class UI(qtw.QMainWindow):
     def refreshtask_pushButton_down(self):
         self.tasks_tableWidget.clearContents()
         self.tasks_tableWidget.setRowCount(0)
+        self.completed_tableWidget.clearContents()
+        self.completed_tableWidget.setRowCount(0)
         self.download_database()
         
     
     def selectdate_calendarWidget(self):
         dateSelect = self.calendarWidget.selectedDate()
+        # Create database or connect to on
+        connData = sqlite3.connect('ToDoList.db')
+
+        # Cursor
+        cData = connData.cursor()
+        
+        cData.execute("SELECT * FROM todolist WHERE date_task=? ORDER BY time_task ASC", (dateSelect.toString("dd.MM.yyyy"),))
+        dataRecords = cData.fetchall()
+        #commit changes
+        connData.commit()
+        #close connection
+        connData.close()
+        self.calendar_tableWidget.clearContents()
+        self.calendar_tableWidget.setRowCount(0)
         self.selectdate_label.setText(dateSelect.toString())
+        for record in dataRecords:
+            row_count = self.calendar_tableWidget.rowCount()
+            self.calendar_tableWidget.setRowCount(row_count + 1)
+            self.calendar_tableWidget.setItem(row_count,0,qtw.QTableWidgetItem(record[0]))
+            self.calendar_tableWidget.setItem(row_count,1,qtw.QTableWidgetItem(record[2]))
+            
+        
         
     def defaultcalendar_pushButton_down(self):
         today = Qt.QDate.currentDate()
         self.calendarWidget.setSelectedDate(today)
         self.calendarWidget.setCurrentPage(today.year(),today.month())
-        
-    def save_pushButton_down(self):
-        pass
 
-        
+
+    def uncompletedtask_pushButton_down(self):
+        # Grab completed task from list
+        clickedRow = self.completed_tableWidget.currentRow()
+        if clickedRow > -1:
+            items =[]
+            for column in range(self.completed_tableWidget.columnCount()):
+                item = self.completed_tableWidget.item(clickedRow, column)
+                if item is not None:
+                    items.append(item.text())
+                else:
+                    items.append("")
+
+            # Create database or connect to on
+            connData = sqlite3.connect('ToDoList.db')
+            # Cursor
+            cData = connData.cursor()
+            items[3] = int(items[3])
+            # Add task to database
+            cData.execute("UPDATE todolist SET completed_task = 0 WHERE id_task= ?",
+                          (items[3],),
+                          )
+            
+            #commit changes
+            connData.commit()
+
+            #close connection
+            connData.close()
+            self.refreshtask_pushButton_down()  
+    
+    
     def finishtask_pushButton_down(self):
         # Grab completed task from list
         clickedRow = self.tasks_tableWidget.currentRow()
@@ -220,18 +283,23 @@ class UI(qtw.QMainWindow):
                     items.append(item.text())
                 else:
                     items.append("")
-            items[2] = Qt.QDate.currentDate().toString("dd.MM.yyyy")     
-            # Remove the task
-            self.tasks_tableWidget.removeRow(clickedRow)
+
+            # Create database or connect to on
+            connData = sqlite3.connect('ToDoList.db')
+            # Cursor
+            cData = connData.cursor()
+            items[3] = int(items[3])
+            # Add task to database
+            cData.execute("UPDATE todolist SET completed_task = 1 WHERE id_task= ?",
+                          (items[3],),
+                          )
             
-            # Add task to completed list
-            row_count = self.completed_tableWidget.rowCount()
-            self.completed_tableWidget.setRowCount(row_count + 1)
-            
-            for column, item in enumerate(items):
-                self.completed_tableWidget.setItem(row_count, column, qtw.QTableWidgetItem(item))
-        else:
-            pass
+            #commit changes
+            connData.commit()
+
+            #close connection
+            connData.close()
+            self.refreshtask_pushButton_down()
         
         
     def addtask_pushButton_down(self):
@@ -252,12 +320,12 @@ class UI(qtw.QMainWindow):
             if self.deadlineTime_CheckBox.isChecked() == True:
                 # Time left to deadline
                 selectTime = self.deadline_timeEdit.time()
-                timeLeft_text = self.timeleft(currentDate, currentTime,self.deadline_timeEdit.time(), self.deadline_dateEdit.date())
+                timeLeft_text = self.timeleft_func(currentDate, currentTime,self.deadline_timeEdit.time(), self.deadline_dateEdit.date())
                 selectTime = selectTime.toString("hh:mm")
                 
             elif self.deadlineTime_CheckBox.isChecked() == False and self.deadlineDate_CheckBox.isChecked() == True:
                 selectTime = Qt.QTime(23,59)
-                timeLeft_text = self.timeleft(currentDate, currentTime, selectTime, self.deadline_dateEdit.date())
+                timeLeft_text = self.timeleft_func(currentDate, currentTime, selectTime, self.deadline_dateEdit.date())
                 selectTime = selectTime.toString("hh:mm")
                 
             else:
@@ -269,10 +337,15 @@ class UI(qtw.QMainWindow):
 
             # Cursor
             cData = connData.cursor()
-            
+            cData.execute("SELECT id_task FROM todolist")
+            busyNumber = cData.fetchall()
+
+            randomNumber = 1
+            while randomNumber in busyNumber or randomNumber == 1:
+                randomNumber = randint(1,1000)
             # Add task to database
-            cData.execute("INSERT INTO todolist (name_task, date_task, time_task) VALUES (?, ?, ?)",
-                (self.addtask_lineEdit.text(), dateTask.text(), selectTime))
+            cData.execute("INSERT INTO todolist (name_task, date_task, time_task, id_task, completed_task) VALUES (?, ?, ?, ?, 0)",
+                (self.addtask_lineEdit.text(), dateTask.text(), selectTime, randomNumber))
             
             #commit changes
             connData.commit()
@@ -285,6 +358,7 @@ class UI(qtw.QMainWindow):
             self.tasks_tableWidget.setItem(row_count,0,nameTask)
             self.tasks_tableWidget.setItem(row_count,1,timeLeft_text)
             self.tasks_tableWidget.setItem(row_count,2,dateTask)
+            self.tasks_tableWidget.setItem(row_count,3,qtw.QTableWidgetItem(str(randomNumber)))
             self.addtask_lineEdit.setText('')
             self.deadline_dateEdit.setDate(Qt.QDate.currentDate())
             self.deadline_timeEdit.setTime(Qt.QTime.currentTime())
@@ -312,8 +386,8 @@ class UI(qtw.QMainWindow):
             cData = connData.cursor()
             
             # Remove task from db
-            cData.execute("DELETE FROM todolist WHERE name_task= ? AND date_task= ?",
-                        (items[0], items[2])
+            cData.execute("DELETE FROM todolist WHERE id_task= ?",
+                        (items[3],),
                         )
             
             #commit changes
@@ -323,6 +397,36 @@ class UI(qtw.QMainWindow):
             connData.close()
         #remove selected row
         self.tasks_tableWidget.removeRow(clicked)
+        
+    def deletetask_pushButton_2_down(self):
+        clicked = self.completed_tableWidget.currentRow()
+        
+        if clicked > -1:
+            items =[]
+            for column in range(self.completed_tableWidget.columnCount()):
+                item = self.completed_tableWidget.item(clicked, column)
+                if item is not None:
+                    items.append(item.text())
+                else:
+                    items.append("")
+            # Create database or connect to on
+            connData = sqlite3.connect('ToDoList.db')
+
+            # Cursor
+            cData = connData.cursor()
+            
+            # Remove task from db
+            cData.execute("DELETE FROM todolist WHERE id_task= ?",
+                        (items[3],),
+                        )
+            
+            #commit changes
+            connData.commit()
+
+            #close connection
+            connData.close()
+        #remove selected row
+        self.completed_tableWidget.removeRow(clicked)
         
     # checkbox fucntion
     
