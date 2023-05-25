@@ -32,7 +32,7 @@
    <double>1.000000000000000</double>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QFrame" name="frame">
+   <widget class="QFrame" name="frameMain">
     <property name="geometry">
      <rect>
       <x>0</x>
@@ -156,7 +156,10 @@
         </rect>
        </property>
        <property name="currentSection">
-        <enum>QDateTimeEdit::DaySection</enum>
+        <enum>QDateTimeEdit::YearSection</enum>
+       </property>
+       <property name="displayFormat">
+        <string>yyyy-MM-dd</string>
        </property>
        <property name="calendarPopup">
         <bool>true</bool>
@@ -218,6 +221,9 @@
          <width>342</width>
          <height>331</height>
         </rect>
+       </property>
+       <property name="verticalScrollBarPolicy">
+        <enum>Qt::ScrollBarAlwaysOn</enum>
        </property>
        <property name="gridStyle">
         <enum>Qt::SolidLine</enum>
@@ -363,6 +369,9 @@
          <height>401</height>
         </rect>
        </property>
+       <property name="verticalScrollBarPolicy">
+        <enum>Qt::ScrollBarAlwaysOn</enum>
+       </property>
        <attribute name="verticalHeaderVisible">
         <bool>false</bool>
        </attribute>
@@ -378,7 +387,7 @@
        </column>
        <column>
         <property name="text">
-         <string>Finish Time</string>
+         <string>Finish Date</string>
         </property>
        </column>
        <column>
@@ -448,6 +457,12 @@
          <width>342</width>
          <height>131</height>
         </rect>
+       </property>
+       <property name="verticalScrollBarPolicy">
+        <enum>Qt::ScrollBarAlwaysOn</enum>
+       </property>
+       <property name="horizontalScrollBarPolicy">
+        <enum>Qt::ScrollBarAsNeeded</enum>
        </property>
        <attribute name="horizontalHeaderMinimumSectionSize">
         <number>70</number>
@@ -603,12 +618,12 @@
         <string>Exit Button:</string>
        </property>
       </widget>
-      <widget class="QCheckBox" name="minimize_checkBox">
+      <widget class="QRadioButton" name="minimize_radioButton">
        <property name="geometry">
         <rect>
          <x>110</x>
          <y>100</y>
-         <width>61</width>
+         <width>71</width>
          <height>21</height>
         </rect>
        </property>
@@ -616,10 +631,10 @@
         <string>Minimize</string>
        </property>
       </widget>
-      <widget class="QCheckBox" name="exit_checkBox">
+      <widget class="QRadioButton" name="exit_radioButton">
        <property name="geometry">
         <rect>
-         <x>180</x>
+         <x>190</x>
          <y>100</y>
          <width>41</width>
          <height>21</height>
@@ -665,7 +680,7 @@
        <property name="frameShadow">
         <enum>QFrame::Raised</enum>
        </property>
-       <widget class="QCheckBox" name="darkMode_checkBox">
+       <widget class="QRadioButton" name="darkMode_radioButton">
         <property name="geometry">
          <rect>
           <x>200</x>
@@ -688,7 +703,7 @@
          </size>
         </property>
        </widget>
-       <widget class="QCheckBox" name="lightMode_checkBox">
+       <widget class="QRadioButton" name="lightMode_radioButton">
         <property name="geometry">
          <rect>
           <x>20</x>
@@ -731,6 +746,22 @@
        </property>
       </widget>
      </widget>
+    </widget>
+    <widget class="QFrame" name="move_frame">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>291</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
     </widget>
    </widget>
   </widget>
