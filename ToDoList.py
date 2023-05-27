@@ -40,9 +40,7 @@ cData.execute(
 cData.execute("SELECT * FROM settings")
 settingsData = cData.fetchone()
 if settingsData is None:
-    cData.execute(
-        "INSERT INTO settings(opacity, minimize, color_mode, autostart) VALUES(100, TRUE, FALSE, FALSE)"
-    )
+    cData.execute("INSERT INTO settings(opacity, minimize, color_mode, autostart) VALUES(100, TRUE, FALSE, FALSE)")
     cData.execute("SELECT * FROM settings")
     settingsData = cData.fetchone()
 
@@ -78,9 +76,7 @@ class UI(qtw.QMainWindow):
 
         # Define the buttons
         self.leave_pushButton = self.findChild(qtw.QPushButton, "leave_pushButton")
-        self.refreshtask_pushButton = self.findChild(
-            qtw.QPushButton, "refreshtask_pushButton"
-        )
+        self.refreshtask_pushButton = self.findChild(qtw.QPushButton, "refreshtask_pushButton")
 
         # Function assignment
         self.leave_pushButton.clicked.connect(self.leave_pushButton_down)
@@ -94,12 +90,8 @@ class UI(qtw.QMainWindow):
 
         # Define the buttons
         self.addtask_pushButton = self.findChild(qtw.QPushButton, "addtask_pushButton")
-        self.deletetask_pushButton = self.findChild(
-            qtw.QPushButton, "deletetask_pushButton"
-        )
-        self.finishtask_pushButton = self.findChild(
-            qtw.QPushButton, "finishtask_pushButton"
-        )
+        self.deletetask_pushButton = self.findChild(qtw.QPushButton, "deletetask_pushButton")
+        self.finishtask_pushButton = self.findChild(qtw.QPushButton, "finishtask_pushButton")
 
         # Assignment of button functions
         self.addtask_pushButton.clicked.connect(self.addtask_pushButton_down)
@@ -107,12 +99,8 @@ class UI(qtw.QMainWindow):
         self.finishtask_pushButton.clicked.connect(self.finishtask_pushButton_down)
 
         # Define the checkboxes
-        self.deadlineDate_CheckBox = self.findChild(
-            qtw.QCheckBox, "deadlineDate_CheckBox"
-        )
-        self.deadlineTime_CheckBox = self.findChild(
-            qtw.QCheckBox, "deadlineTime_CheckBox"
-        )
+        self.deadlineDate_CheckBox = self.findChild(qtw.QCheckBox, "deadlineDate_CheckBox")
+        self.deadlineTime_CheckBox = self.findChild(qtw.QCheckBox, "deadlineTime_CheckBox")
 
         # Assignment of checkbox functions
         self.deadlineDate_CheckBox.toggled.connect(self.checked)
@@ -148,22 +136,14 @@ class UI(qtw.QMainWindow):
         # Completed tab
 
         # Define the buttons
-        self.uncompletedtask_pushButton = self.findChild(
-            qtw.QPushButton, "uncompletedtask_pushButton"
-        )
-        self.deletetask_pushButton_2 = self.findChild(
-            qtw.QPushButton, "deletetask_pushButton_2"
-        )
+        self.uncompletedtask_pushButton = self.findChild(qtw.QPushButton, "uncompletedtask_pushButton")
+        self.deletetask_pushButton_2 = self.findChild(qtw.QPushButton, "deletetask_pushButton_2")
         # Assignment of button functions
-        self.uncompletedtask_pushButton.clicked.connect(
-            self.uncompletedtask_pushButton_down
-        )
+        self.uncompletedtask_pushButton.clicked.connect(self.uncompletedtask_pushButton_down)
         self.deletetask_pushButton_2.clicked.connect(self.deletetask_pushButton_2_down)
 
         # Define tasks table
-        self.completed_tableWidget = self.findChild(
-            qtw.QTableWidget, "completed_tableWidget"
-        )
+        self.completed_tableWidget = self.findChild(qtw.QTableWidget, "completed_tableWidget")
 
         # Size column tasks table
         self.completed_tableWidget.setColumnWidth(0, 153)
@@ -177,14 +157,10 @@ class UI(qtw.QMainWindow):
         # Calendar tab
 
         # Define the buttons
-        self.defaultcalendar_pushButton = self.findChild(
-            qtw.QPushButton, "defaultcalendar_pushButton"
-        )
+        self.defaultcalendar_pushButton = self.findChild(qtw.QPushButton, "defaultcalendar_pushButton")
 
         # Assignment of button functions
-        self.defaultcalendar_pushButton.clicked.connect(
-            self.defaultcalendar_pushButton_down
-        )
+        self.defaultcalendar_pushButton.clicked.connect(self.defaultcalendar_pushButton_down)
 
         # Define the calendarWidget
         self.calendarWidget = self.findChild(qtw.QCalendarWidget, "calendarWidget")
@@ -193,9 +169,7 @@ class UI(qtw.QMainWindow):
         self.calendarWidget.selectionChanged.connect(self.selectdate_calendarWidget)
 
         # Define the table of tasks selected day
-        self.calendar_tableWidget = self.findChild(
-            qtw.QTableWidget, "calendar_tableWidget"
-        )
+        self.calendar_tableWidget = self.findChild(qtw.QTableWidget, "calendar_tableWidget")
 
         # Size column calendar table
         self.calendar_tableWidget.setColumnWidth(0, 233)
@@ -208,14 +182,10 @@ class UI(qtw.QMainWindow):
         # Settings tab
 
         # Define opacity sldier and label
-        self.opacity_horizontalSlider = self.findChild(
-            qtw.QSlider, "opacity_horizontalSlider"
-        )
+        self.opacity_horizontalSlider = self.findChild(qtw.QSlider, "opacity_horizontalSlider")
         self.opacityPercent_label = self.findChild(qtw.QLabel, "opacityPercent_label")
         # Assignment of opacity functions
-        self.opacity_horizontalSlider.valueChanged.connect(
-            self.opacity_horizontalSlider_change
-        )
+        self.opacity_horizontalSlider.valueChanged.connect(self.opacity_horizontalSlider_change)
         self.opacity_horizontalSlider.setMinimum(10)
         self.opacity_horizontalSlider.setMaximum(100)
         self.opacity_horizontalSlider.setValue(opacitySettings)
@@ -230,39 +200,25 @@ class UI(qtw.QMainWindow):
         # Define radio buttons
         # Minimize/exit button
         self.exit_radioButton = self.findChild(qtw.QRadioButton, "exit_radioButton")
-        self.minimize_radioButton = self.findChild(
-            qtw.QRadioButton, "minimize_radioButton"
-        )
+        self.minimize_radioButton = self.findChild(qtw.QRadioButton, "minimize_radioButton")
         # Assignment of Minimize/Exit functions
         if minimizeSettings:
             self.minimize_radioButton.setChecked(True)
         else:
             self.exit_radioButton.setChecked(True)
-        self.minimize_radioButton.toggled.connect(
-            lambda: self.minimizeExit_state(self.minimize_radioButton)
-        )
-        self.exit_radioButton.toggled.connect(
-            lambda: self.minimizeExit_state(self.exit_radioButton)
-        )
+        self.minimize_radioButton.toggled.connect(lambda: self.minimizeExit_state(self.minimize_radioButton))
+        self.exit_radioButton.toggled.connect(lambda: self.minimizeExit_state(self.exit_radioButton))
 
         # Dark/Light mode
-        self.darkMode_radioButton = self.findChild(
-            qtw.QRadioButton, "darkMode_radioButton"
-        )
-        self.lightMode_radioButton = self.findChild(
-            qtw.QRadioButton, "lightMode_radioButton"
-        )
+        self.darkMode_radioButton = self.findChild(qtw.QRadioButton, "darkMode_radioButton")
+        self.lightMode_radioButton = self.findChild(qtw.QRadioButton, "lightMode_radioButton")
         # Assignment of Dark/Light functions
         if colorSettings:
             self.lightMode_radioButton.setChecked(True)
         else:
             self.darkMode_radioButton.setChecked(True)
-        self.lightMode_radioButton.toggled.connect(
-            lambda: self.colorMode_state(self.lightMode_radioButton)
-        )
-        self.darkMode_radioButton.toggled.connect(
-            lambda: self.colorMode_state(self.darkMode_radioButton)
-        )
+        self.lightMode_radioButton.toggled.connect(lambda: self.colorMode_state(self.lightMode_radioButton))
+        self.darkMode_radioButton.toggled.connect(lambda: self.colorMode_state(self.darkMode_radioButton))
 
         # ___________________________________________________________________________#
 
@@ -290,20 +246,12 @@ class UI(qtw.QMainWindow):
         if current_date_time.secsTo(selected_date_time) > 0:
             if current_date_time.secsTo(selected_date_time) < 86400:
                 timeLeft = int(current_date_time.secsTo(selected_date_time) / 3600)
-                timeLeft_text = (
-                    f"{timeLeft} hours" if timeLeft > 1 else f"{timeLeft} hour"
-                )
+                timeLeft_text = f"{timeLeft} hours" if timeLeft > 1 else f"{timeLeft} hour"
                 if timeLeft < 1:
-                    timeLeft = int(
-                        (current_date_time.secsTo(selected_date_time) % 3600) / 60
-                    )
-                    timeLeft_text = (
-                        f"{timeLeft} minutes" if timeLeft > 1 else f"{timeLeft} minute"
-                    )
+                    timeLeft = int((current_date_time.secsTo(selected_date_time) % 3600) / 60)
+                    timeLeft_text = f"{timeLeft} minutes" if timeLeft > 1 else f"{timeLeft} minute"
             else:
-                timeLeft_text = (
-                    f"{timeLeft} days" if timeLeft > 1 else f"{timeLeft} day"
-                )
+                timeLeft_text = f"{timeLeft} days" if timeLeft > 1 else f"{timeLeft} day"
 
             timeLeft_text = qtw.QTableWidgetItem(timeLeft_text)
         else:
@@ -312,17 +260,30 @@ class UI(qtw.QMainWindow):
 
     # Download all data from the database
     def download_database(self):
+        # Cell format
+        cellOption = Qt.Qt.AlignmentFlag.AlignLeft | Qt.Qt.AlignmentFlag.AlignCenter
+        sort = self.timesort_comboBox.currentIndex()
         currentDate = Qt.QDate.currentDate()
         currentTime = Qt.QTime.currentTime()
+        selectTime = ["-", "Delayed"]
+        if sort == 0:
+            selectTime.append(currentDate.toString("yyyy-MM-dd"))
+        elif sort == 1:
+            for i in range(7):
+                selectTime.append(currentDate.addDays(i).toString("yyyy-MM-dd"))
+        elif sort == 2:
+            for i in range(14):
+                selectTime.append(currentDate.addDays(i).toString("yyyy-MM-dd"))
+        elif sort == 3:
+            selectTime = []
+        elif sort == 4:
+            selectTime = ["Delayed"]
         # connect to database
         connData = sqlite3.connect("ToDoList.db")
 
         # Cursor
         cData = connData.cursor()
-
-        cData.execute(
-            "SELECT * FROM todolist ORDER BY date(date_task) ASC, TIME(time_task)"
-        )
+        cData.execute("SELECT * FROM todolist ORDER BY date(date_task) ASC, TIME(time_task)")
         dataRecords = cData.fetchall()
 
         # commit changes
@@ -330,6 +291,7 @@ class UI(qtw.QMainWindow):
 
         # close connection
         connData.close()
+
         for record in dataRecords:
             if record[4] == 0:
                 row_count = self.tasks_tableWidget.rowCount()
@@ -339,41 +301,28 @@ class UI(qtw.QMainWindow):
                 else:
                     itemDate = Qt.QDate.fromString(record[1], "yyyy-MM-dd")
                     itemTime = Qt.QTime.fromString(record[2], "hh:mm")
-                    self.tasks_tableWidget.setRowCount(row_count + 1)
-                    itemTime = qtw.QTableWidgetItem(
-                        self.timeleft_func(currentDate, currentTime, itemTime, itemDate)
-                    )
-
+                    itemTime = qtw.QTableWidgetItem(self.timeleft_func(currentDate, currentTime, itemTime, itemDate))
                     itemDate = qtw.QTableWidgetItem(record[1])
-                self.tasks_tableWidget.setRowCount(row_count + 1)
-                self.tasks_tableWidget.setItem(
-                    row_count, 0, qtw.QTableWidgetItem(record[0])
-                )
-                self.tasks_tableWidget.setItem(
-                    row_count, 1, qtw.QTableWidgetItem(itemTime)
-                )
-                self.tasks_tableWidget.setItem(
-                    row_count, 2, qtw.QTableWidgetItem(itemDate)
-                )
-                self.tasks_tableWidget.setItem(
-                    row_count, 3, qtw.QTableWidgetItem(str(record[3]))
-                )
+                if itemDate.text() in selectTime or itemTime.text() in selectTime or sort == 3:
+                    self.tasks_tableWidget.setRowCount(row_count + 1)
+                    self.tasks_tableWidget.setItem(row_count, 0, qtw.QTableWidgetItem(record[0]))
+                    itemTime.setTextAlignment(cellOption)
+                    itemDate.setTextAlignment(cellOption)
+                    self.tasks_tableWidget.setItem(row_count, 1, itemTime)
+                    self.tasks_tableWidget.setItem(row_count, 2, itemDate)
+                    self.tasks_tableWidget.setItem(row_count, 3, qtw.QTableWidgetItem(str(record[3])))
 
             else:
                 row_count = self.completed_tableWidget.rowCount()
                 self.completed_tableWidget.setRowCount(row_count + 1)
-                self.completed_tableWidget.setItem(
-                    row_count, 0, qtw.QTableWidgetItem(record[0])
-                )
-                self.completed_tableWidget.setItem(
-                    row_count, 1, qtw.QTableWidgetItem(record[6])
-                )
-                self.completed_tableWidget.setItem(
-                    row_count, 2, qtw.QTableWidgetItem(record[5])
-                )
-                self.completed_tableWidget.setItem(
-                    row_count, 3, qtw.QTableWidgetItem(str(record[3]))
-                )
+                self.completed_tableWidget.setItem(row_count, 0, qtw.QTableWidgetItem(record[0]))
+                itemTime = qtw.QTableWidgetItem(record[6])
+                itemDate = qtw.QTableWidgetItem(record[5])
+                itemTime.setTextAlignment(cellOption)
+                itemDate.setTextAlignment(cellOption)
+                self.completed_tableWidget.setItem(row_count, 1, itemTime)
+                self.completed_tableWidget.setItem(row_count, 2, itemDate)
+                self.completed_tableWidget.setItem(row_count, 3, qtw.QTableWidgetItem(str(record[3])))
 
     # Button function
 
@@ -390,6 +339,16 @@ class UI(qtw.QMainWindow):
         self.tasks_tableWidget.setRowCount(0)
         self.completed_tableWidget.clearContents()
         self.completed_tableWidget.setRowCount(0)
+        # Resize columns
+        self.completed_tableWidget.setColumnWidth(0, 153)
+        self.completed_tableWidget.setColumnWidth(1, 80)
+        self.completed_tableWidget.setColumnWidth(2, 90)
+        self.tasks_tableWidget.setColumnWidth(0, 153)
+        self.tasks_tableWidget.setColumnWidth(1, 80)
+        self.tasks_tableWidget.setColumnWidth(2, 90)
+        self.calendar_tableWidget.setColumnWidth(0, 233)
+        self.calendar_tableWidget.setColumnWidth(1, 90)
+        # Redownload
         self.download_database()
 
     # ___________________________________________________________________________#
@@ -405,13 +364,8 @@ class UI(qtw.QMainWindow):
             if self.deadlineDate_CheckBox.isChecked() == True:
                 dateTask = qtw.QTableWidgetItem(self.deadline_dateEdit.text())
 
-            elif (
-                self.deadlineDate_CheckBox.isChecked() == False
-                and self.deadlineTime_CheckBox.isChecked() == True
-            ):
-                dateTask = qtw.QTableWidgetItem(
-                    Qt.QDate.currentDate().toString("yyyy-MM-dd")
-                )
+            elif self.deadlineDate_CheckBox.isChecked() == False and self.deadlineTime_CheckBox.isChecked() == True:
+                dateTask = qtw.QTableWidgetItem(Qt.QDate.currentDate().toString("yyyy-MM-dd"))
 
             else:
                 dateTask = qtw.QTableWidgetItem("-")
@@ -428,14 +382,9 @@ class UI(qtw.QMainWindow):
                 )
                 selectTime = selectTime.toString("hh:mm")
 
-            elif (
-                self.deadlineTime_CheckBox.isChecked() == False
-                and self.deadlineDate_CheckBox.isChecked() == True
-            ):
+            elif self.deadlineTime_CheckBox.isChecked() == False and self.deadlineDate_CheckBox.isChecked() == True:
                 selectTime = Qt.QTime(23, 59)
-                timeLeft_text = self.timeleft_func(
-                    currentDate, currentTime, selectTime, self.deadline_dateEdit.date()
-                )
+                timeLeft_text = self.timeleft_func(currentDate, currentTime, selectTime, self.deadline_dateEdit.date())
                 selectTime = selectTime.toString("hh:mm")
 
             else:
@@ -475,9 +424,7 @@ class UI(qtw.QMainWindow):
             self.tasks_tableWidget.setItem(row_count, 0, nameTask)
             self.tasks_tableWidget.setItem(row_count, 1, timeLeft_text)
             self.tasks_tableWidget.setItem(row_count, 2, dateTask)
-            self.tasks_tableWidget.setItem(
-                row_count, 3, qtw.QTableWidgetItem(str(randomNumber))
-            )
+            self.tasks_tableWidget.setItem(row_count, 3, qtw.QTableWidgetItem(str(randomNumber)))
             self.addtask_lineEdit.setText("")
             self.deadline_dateEdit.setDate(Qt.QDate.currentDate())
             self.deadline_timeEdit.setTime(Qt.QTime.currentTime())
@@ -570,7 +517,11 @@ class UI(qtw.QMainWindow):
 
     # Filter list by time
     def timesort(self, index):
-        print(self.timesort_comboBox.currentText())
+        self.tasks_tableWidget.clearContents()
+        self.tasks_tableWidget.setRowCount(0)
+        self.completed_tableWidget.clearContents()
+        self.completed_tableWidget.setRowCount(0)
+        self.download_database()
 
     # ___________________________________________________________________________#
 
@@ -665,12 +616,8 @@ class UI(qtw.QMainWindow):
         for record in dataRecords:
             row_count = self.calendar_tableWidget.rowCount()
             self.calendar_tableWidget.setRowCount(row_count + 1)
-            self.calendar_tableWidget.setItem(
-                row_count, 0, qtw.QTableWidgetItem(record[0])
-            )
-            self.calendar_tableWidget.setItem(
-                row_count, 1, qtw.QTableWidgetItem(record[2])
-            )
+            self.calendar_tableWidget.setItem(row_count, 0, qtw.QTableWidgetItem(record[0]))
+            self.calendar_tableWidget.setItem(row_count, 1, qtw.QTableWidgetItem(record[2]))
 
     # Return to current date
     def defaultcalendar_pushButton_down(self):
