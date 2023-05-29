@@ -1,7 +1,6 @@
+import os
 import sqlite3
 import sys
-import typing
-from itertools import count
 from random import randint
 
 import PyQt6.QtCore as Qt
@@ -9,8 +8,16 @@ import PyQt6.QtWidgets as qtw
 from PyQt6 import uic
 from PyQt6.QtGui import QAction, QIcon
 
+
+# File path
+databaseFile = "ToDoList.db"
+trayIconPng = "Icons\clipboard-text.png"
+trayIconPng = os.path.abspath(trayIconPng)
+databaseFile = os.path.abspath(databaseFile)
+
+
 # Create database or connect to on
-connData = sqlite3.connect("ToDoList.db")
+connData = sqlite3.connect(databaseFile)
 
 # Cursor
 cData = connData.cursor()
@@ -30,7 +37,6 @@ cData.execute(
 cData.execute(
     """CREATE TABLE if not exists settings(
     opacity INT,
-    autostart BOOLEAN,
     minimize BOOLEAN,
     color_mode BOOLEAN)
     """
@@ -40,16 +46,21 @@ cData.execute(
 cData.execute("SELECT * FROM settings")
 settingsData = cData.fetchone()
 if settingsData is None:
-    cData.execute("INSERT INTO settings(opacity, minimize, color_mode, autostart) VALUES(100, TRUE, FALSE, FALSE)")
+    cData.execute("INSERT INTO settings(opacity, minimize, color_mode) VALUES(100, TRUE, FALSE)")
     cData.execute("SELECT * FROM settings")
     settingsData = cData.fetchone()
 
 
 opacitySettings = settingsData[0]
-autostartSettings = settingsData[1]
-minimizeSettings = settingsData[2]
-colorSettings = settingsData[3]
+minimizeSettings = settingsData[1]
+colorSettings = settingsData[2]
 
+
+if colorSettings:
+    uiFile = "ToDoList.ui"
+else:
+    uiFile = "ToDoList_dark.ui"
+uiFile = os.path.abspath(uiFile)
 # commit changes
 connData.commit()
 
@@ -62,7 +73,7 @@ class UI(qtw.QMainWindow):
         super(UI, self).__init__()
 
         # Load the ui file
-        uic.loadUi("ToDoList.ui", self)
+        uic.loadUi(uiFile, self)
 
         # ___________________________________________________________________________#
         # Window
@@ -84,7 +95,7 @@ class UI(qtw.QMainWindow):
 
         # Window attribute
         self.setWindowFlags(Qt.Qt.WindowType.FramelessWindowHint)
-        app.setQuitOnLastWindowClosed(False)
+
         # ___________________________________________________________________________#
         # Task tab
 
@@ -191,12 +202,6 @@ class UI(qtw.QMainWindow):
         self.opacity_horizontalSlider.setValue(opacitySettings)
         self.opacityPercent_label.setText(f"{self.opacity_horizontalSlider.value()}%")
 
-        # Define checkboxes
-        self.autoStart_checkBox = self.findChild(qtw.QCheckBox, "autoStart_checkBox")
-
-        self.autoStart_checkBox.setChecked(autostartSettings)
-        self.autoStart_checkBox.toggled.connect(self.autostart_checked)
-
         # Define radio buttons
         # Minimize/exit button
         self.exit_radioButton = self.findChild(qtw.QRadioButton, "exit_radioButton")
@@ -212,6 +217,8 @@ class UI(qtw.QMainWindow):
         # Dark/Light mode
         self.darkMode_radioButton = self.findChild(qtw.QRadioButton, "darkMode_radioButton")
         self.lightMode_radioButton = self.findChild(qtw.QRadioButton, "lightMode_radioButton")
+        self.colorMode_label = self.findChild(qtw.QLabel, "colorMode_label")
+        self.colorMode_label.hide()
         # Assignment of Dark/Light functions
         if colorSettings:
             self.lightMode_radioButton.setChecked(True)
@@ -279,7 +286,7 @@ class UI(qtw.QMainWindow):
         elif sort == 4:
             selectTime = ["Delayed"]
         # connect to database
-        connData = sqlite3.connect("ToDoList.db")
+        connData = sqlite3.connect(databaseFile)
 
         # Cursor
         cData = connData.cursor()
@@ -392,7 +399,7 @@ class UI(qtw.QMainWindow):
                 timeLeft_text = qtw.QTableWidgetItem("-")
 
             # Create database or connect to on
-            connData = sqlite3.connect("ToDoList.db")
+            connData = sqlite3.connect(databaseFile)
 
             # Cursor
             cData = connData.cursor()
@@ -460,7 +467,7 @@ class UI(qtw.QMainWindow):
                 else:
                     items.append("")
             # Create database or connect to on
-            connData = sqlite3.connect("ToDoList.db")
+            connData = sqlite3.connect(databaseFile)
 
             # Cursor
             cData = connData.cursor()
@@ -493,7 +500,7 @@ class UI(qtw.QMainWindow):
                     items.append("")
 
             # Create database or connect to on
-            connData = sqlite3.connect("ToDoList.db")
+            connData = sqlite3.connect(databaseFile)
             # Cursor
             cData = connData.cursor()
             items[3] = int(items[3])
@@ -540,7 +547,7 @@ class UI(qtw.QMainWindow):
                     items.append("")
 
             # Create database or connect to on
-            connData = sqlite3.connect("ToDoList.db")
+            connData = sqlite3.connect(databaseFile)
             # Cursor
             cData = connData.cursor()
             items[3] = int(items[3])
@@ -570,7 +577,7 @@ class UI(qtw.QMainWindow):
                 else:
                     items.append("")
             # Create database or connect to on
-            connData = sqlite3.connect("ToDoList.db")
+            connData = sqlite3.connect(databaseFile)
 
             # Cursor
             cData = connData.cursor()
@@ -596,7 +603,7 @@ class UI(qtw.QMainWindow):
     def selectdate_calendarWidget(self):
         dateSelect = self.calendarWidget.selectedDate()
         # Create database or connect to on
-        connData = sqlite3.connect("ToDoList.db")
+        connData = sqlite3.connect(databaseFile)
 
         # Cursor
         cData = connData.cursor()
@@ -634,7 +641,7 @@ class UI(qtw.QMainWindow):
         opacityValue = value / 100
         self.setWindowOpacity(opacityValue)
         # connect to database
-        connData = sqlite3.connect("ToDoList.db")
+        connData = sqlite3.connect(databaseFile)
 
         # Cursor
         cData = connData.cursor()
@@ -647,40 +654,21 @@ class UI(qtw.QMainWindow):
         # close connection
         connData.close()
 
-    # Autostart setting
-    def autostart_checked(self):
-        # connect to db
-        connData = sqlite3.connect("ToDoList.db")
-
-        # Cursor
-        cData = connData.cursor()
-
-        if self.autoStart_checkBox.isChecked() == True:
-            cData.execute("UPDATE settings SET autostart = TRUE")
-
-            """ADD autostart function"""
-
-        else:
-            cData.execute("UPDATE settings SET autostart = FALSE")
-        # commit changes
-        connData.commit()
-
-        # close connection
-        connData.close()
-
     # Exit button setting
     def minimizeExit_state(self, bName):
         if bName.isChecked():
             # connect to database
-            connData = sqlite3.connect("ToDoList.db")
+            connData = sqlite3.connect(databaseFile)
 
             # Cursor
             cData = connData.cursor()
 
             if bName.text() == "Minimize":
                 cData.execute("UPDATE settings SET minimize=TRUE")
+                self.minimize_radioButton.setChecked(True)
             else:
                 cData.execute("UPDATE settings SET minimize=FALSE")
+                self.exit_radioButton.setChecked(True)
 
             # commit changes
             connData.commit()
@@ -692,15 +680,23 @@ class UI(qtw.QMainWindow):
     def colorMode_state(self, bName):
         if bName.isChecked():
             # connect to database
-            connData = sqlite3.connect("ToDoList.db")
+            connData = sqlite3.connect(databaseFile)
 
             # Cursor
             cData = connData.cursor()
 
             if bName == self.lightMode_radioButton:
                 cData.execute("UPDATE settings SET color_mode=TRUE")
+                uiFile = "ToDoList.ui"
+                uiFile = os.path.abspath(uiFile)
+                self.colorMode_label.show()
+
             else:
                 cData.execute("UPDATE settings SET color_mode=FALSE")
+                uiFile = "ToDoList_dark.ui"
+                uiFile = os.path.abspath(uiFile)
+                self.colorMode_label.show()
+
             # commit changes
             connData.commit()
 
@@ -713,7 +709,10 @@ app = qtw.QApplication(sys.argv)
 UIWindow = UI()
 
 # Create tray icon
-trayIcon = qtw.QSystemTrayIcon(QIcon("Icons/clipboard-text.png"), parent=app)
+
+trayIcon = qtw.QSystemTrayIcon(QIcon(trayIconPng), parent=app)
+app.setQuitOnLastWindowClosed(False)
+
 trayIcon_menu = qtw.QMenu()
 showApp = QAction("Restore")
 exitApp = QAction("Exit")

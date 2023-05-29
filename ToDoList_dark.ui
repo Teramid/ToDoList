@@ -31,7 +31,13 @@
   <property name="windowOpacity">
    <double>1.000000000000000</double>
   </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(132, 132, 132);</string>
+  </property>
   <widget class="QWidget" name="centralwidget">
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(132, 132, 132);</string>
+   </property>
    <widget class="QFrame" name="frameMain">
     <property name="geometry">
      <rect>
@@ -42,7 +48,7 @@
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true"/>
+     <string notr="true">background-color: rgb(132, 132, 132);</string>
     </property>
     <property name="frameShape">
      <enum>QFrame::StyledPanel</enum>
@@ -97,12 +103,16 @@
       </rect>
      </property>
      <property name="styleSheet">
-      <string notr="true"/>
+      <string notr="true">
+background-color: rgb(132, 132, 132);</string>
      </property>
      <property name="currentIndex">
       <number>0</number>
      </property>
      <widget class="QWidget" name="tasks_Tab">
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(132, 132, 132);</string>
+      </property>
       <attribute name="icon">
        <iconset>
         <normaloff>Icons/clipboard--pencil.png</normaloff>Icons/clipboard--pencil.png</iconset>
@@ -121,6 +131,9 @@
        </property>
        <property name="accessibleDescription">
         <string/>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(166, 166, 166);</string>
        </property>
        <property name="placeholderText">
         <string>Enter the task</string>
@@ -154,6 +167,9 @@
          <width>91</width>
          <height>22</height>
         </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(166, 166, 166);</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -196,6 +212,9 @@
        <property name="focusPolicy">
         <enum>Qt::WheelFocus</enum>
        </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(166, 166, 166);</string>
+       </property>
        <property name="buttonSymbols">
         <enum>QAbstractSpinBox::UpDownArrows</enum>
        </property>
@@ -224,6 +243,10 @@
          <width>342</width>
          <height>331</height>
         </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(166, 166, 166);
+</string>
        </property>
        <property name="verticalScrollBarPolicy">
         <enum>Qt::ScrollBarAlwaysOn</enum>
@@ -311,6 +334,9 @@
          <height>22</height>
         </rect>
        </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(166, 166, 166);</string>
+       </property>
        <item>
         <property name="text">
          <string>Today</string>
@@ -356,6 +382,9 @@
       </widget>
      </widget>
      <widget class="QWidget" name="completed_Tab">
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(132, 132, 132);</string>
+      </property>
       <attribute name="icon">
        <iconset>
         <normaloff>Icons/clipboard-task.png</normaloff>Icons/clipboard-task.png</iconset>
@@ -372,6 +401,9 @@
          <height>401</height>
         </rect>
        </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(166, 166, 166);</string>
+       </property>
        <property name="verticalScrollBarPolicy">
         <enum>Qt::ScrollBarAlwaysOn</enum>
        </property>
@@ -382,15 +414,36 @@
         <property name="text">
          <string>Task</string>
         </property>
+        <property name="background">
+         <color>
+          <red>168</red>
+          <green>168</green>
+          <blue>168</blue>
+         </color>
+        </property>
        </column>
        <column>
         <property name="text">
          <string>Time Left</string>
         </property>
+        <property name="background">
+         <color>
+          <red>166</red>
+          <green>166</green>
+          <blue>166</blue>
+         </color>
+        </property>
        </column>
        <column>
         <property name="text">
          <string>Finish Date</string>
+        </property>
+        <property name="background">
+         <color>
+          <red>166</red>
+          <green>166</green>
+          <blue>166</blue>
+         </color>
         </property>
        </column>
        <column>
@@ -435,6 +488,9 @@
       </widget>
      </widget>
      <widget class="QWidget" name="calendar_tab">
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(132, 132, 132);</string>
+      </property>
       <attribute name="icon">
        <iconset>
         <normaloff>Icons/calendar-search-result.png</normaloff>Icons/calendar-search-result.png</iconset>
@@ -451,6 +507,9 @@
          <height>261</height>
         </rect>
        </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(166, 166, 166);</string>
+       </property>
       </widget>
       <widget class="QTableWidget" name="calendar_tableWidget">
        <property name="geometry">
@@ -460,6 +519,9 @@
          <width>342</width>
          <height>131</height>
         </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(166, 166, 166);</string>
        </property>
        <property name="verticalScrollBarPolicy">
         <enum>Qt::ScrollBarAlwaysOn</enum>
@@ -534,6 +596,9 @@
       </widget>
      </widget>
      <widget class="QWidget" name="tab">
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(132, 132, 132);</string>
+      </property>
       <attribute name="icon">
        <iconset>
         <normaloff>Icons/wrench.png</normaloff>Icons/wrench.png</iconset>
