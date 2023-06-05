@@ -1,9 +1,7 @@
 # ToDoList
-A ToDoList application is written in **Python** using the **PyQt6** and **sqlite3** libraries. It allows users to select a time range for tasks and displays them on a calendar. All changes made are saved to a .db file. 
+
+A ToDoList application is written in **Python** using the **PyQt6** and **sqlite3** libraries. It allows users to select a time range for tasks and displays them on a calendar. All changes made are saved to a .db file.
 The application also provides options to customize the appearance and set an exit button. When the program is minimized, it is hidden in the system tray.
-
-The FixPath.py file, when run, creates a .pyw file that contains the full file paths. This allows you to run the application without the need to use the console.
-
 
 ![app1](https://github.com/Teramid/ToDoList/assets/81380951/a992999b-a85b-4319-9709-1fdf783df410)
 ![app1_5](https://github.com/Teramid/ToDoList/assets/81380951/70a5de3a-b3b8-49b4-af21-4d825c1b6bb9)
@@ -35,7 +33,9 @@ Run the code
 ```bash
   python ToDoList.py
 ```
+
 Or use and create a .pyw file
+
 ```bash
   python FixPath.py
 ```

@@ -10,10 +10,13 @@ from PyQt6.QtGui import QAction, QIcon
 
 
 # File path
-databaseFile = "ToDoList.db"
-trayIconPng = "Icons\clipboard-text.png"
-trayIconPng = os.path.abspath(trayIconPng)
-databaseFile = os.path.abspath(databaseFile)
+current_file = __file__
+current_path = os.path.abspath(current_file)
+current_path = current_path.split("\\")
+current_path = "/".join(x for x in current_path[0 : len(current_path) - 1])
+print(current_path)
+databaseFile = f"{current_path}/ToDoList.db"
+trayIconPng = f"{current_path}/Icons/clipboard-text.png"
 
 
 # Create database or connect to on
@@ -57,9 +60,9 @@ colorSettings = settingsData[2]
 
 
 if colorSettings:
-    uiFile = "ToDoList.ui"
+    uiFile = f"{current_path}/ToDoList.ui"
 else:
-    uiFile = "ToDoList_dark.ui"
+    uiFile = f"{current_path}/ToDoList_dark.ui"
 uiFile = os.path.abspath(uiFile)
 # commit changes
 connData.commit()
